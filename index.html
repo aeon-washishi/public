@@ -42,7 +42,7 @@
     }
     .card h2{font-size:16px;margin:0 0 10px;color:var(--accent)}
 
-    .step{display:inline-flex;align-items:center;gap:8px;font-weight:1000}
+    .step{display:inline-flex;align-items:center;gap:8px;font-weight:1100}
     .stepNo{
       width:28px;height:28px;border-radius:999px;
       display:inline-grid;place-items:center;
@@ -54,7 +54,7 @@
       display:block;
       font-size:15px;
       color:var(--ink);
-      font-weight:900;
+      font-weight:950;
       margin:14px 0 8px;
     }
     .hint{
@@ -75,6 +75,8 @@
       outline:none;
     }
     input:focus{border-color:var(--accent2);box-shadow:0 0 0 5px rgba(177,76,201,.12)}
+    input[disabled]{background:#faf7fc;color:#333}
+
     .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:640px){ .two{grid-template-columns:1fr} }
 
@@ -95,13 +97,11 @@
       border:none;
       border-radius:14px;
       padding:12px 14px;
-      font-weight:1000;
+      font-weight:1100;
       font-size:15px;
       cursor:pointer;
     }
     .ghost{background:#fff;border:1px solid var(--line);color:var(--ink);}
-    .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;}
-    .mini{padding:10px 12px;font-size:14px;border-radius:12px}
 
     .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
     .chipBtn{
@@ -124,20 +124,20 @@
       border-radius:14px;
       padding:14px;
     }
-    .kpi .t{font-size:14px;color:var(--muted);font-weight:900}
-    .kpi .v{font-size:22px;margin-top:6px;font-weight:1100}
+    .kpi .t{font-size:14px;color:var(--muted);font-weight:950}
+    .kpi .v{font-size:22px;margin-top:6px;font-weight:1200}
     .kpi .s{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6}
 
     details{margin-top:12px}
     details summary{
-      cursor:pointer;color:var(--accent);font-weight:1000;font-size:15px;
+      cursor:pointer;color:var(--accent);font-weight:1100;font-size:15px;
       list-style:none;user-select:none;padding:6px 0;
     }
     details summary::-webkit-details-marker{display:none}
 
     footer{margin:12px 0 4px;color:var(--muted);font-size:12px;line-height:1.7}
-    .warn{color:var(--warn);font-weight:1000}
-    .ok{color:var(--ok);font-weight:1000}
+    .warn{color:var(--warn);font-weight:1100}
+    .ok{color:var(--ok);font-weight:1100}
 
     .yt{
       display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
@@ -145,12 +145,12 @@
       background:linear-gradient(180deg, rgba(177,76,201,.08), rgba(0,0,0,0));
       padding:14px;border-radius:16px;
     }
-    .yt .title{font-weight:1100;font-size:16px;color:var(--ink)}
+    .yt .title{font-weight:1200;font-size:16px;color:var(--ink)}
     .yt .desc{color:var(--muted);font-size:13px;line-height:1.7;margin-top:6px}
     a.btnLink{
       display:inline-block;text-decoration:none;
       background:linear-gradient(90deg,var(--accent),var(--accent2));
-      color:#fff;font-weight:1100;
+      color:#fff;font-weight:1200;
       padding:12px 14px;border-radius:14px;
       font-size:15px;
     }
@@ -181,19 +181,6 @@
           <label>取得株価（円）</label>
           <input id="price" inputmode="numeric" placeholder="例：1800" />
           <span class="hint">※利回り計算に使います（「いくらで買ったか」）</span>
-
-          <div class="note" style="margin-top:10px">
-            <strong>参考：直近（前営業日）の終値</strong><br/>
-            <div style="margin-top:6px">
-              <span id="lastCloseText">-</span>
-              <span id="lastCloseDate" style="margin-left:8px;color:var(--muted)"></span>
-            </div>
-            <div class="btns" style="margin-top:10px">
-              <button class="ghost mini" id="fetchCloseBtn" type="button">終値を取得</button>
-              <button class="ghost mini" id="fillPriceBtn" type="button">取得株価に入れる</button>
-            </div>
-            <div class="toast" id="closeToast"></div>
-          </div>
         </div>
       </div>
 
@@ -324,8 +311,7 @@
     </section>
 
     <footer>
-      ※本ページは「買い物キャッシュバック」＋「映画割引」のみの試算です（配当、対象外取引、利用条件・回数制限の変更などは反映していません）。<br/>
-      ※終値の取得はネット接続・提供元の仕様により、表示できない場合があります。
+      ※本ページは「買い物キャッシュバック」＋「映画割引」のみの試算です（配当、対象外取引、利用条件・回数制限の変更などは反映していません）。
     </footer>
   </div>
 
@@ -352,11 +338,10 @@
   }
 
   function setToast(msg){ $("toast").textContent = msg || ""; }
-  function setCloseToast(msg){ $("closeToast").textContent = msg || ""; }
 
   function formatInputWithCommas(inputEl){
     const raw = inputEl.value.trim();
-    if (raw === "") return; // 空はそのまま
+    if (raw === "") return;
     const n = parseNum(raw);
     inputEl.value = fmtNum(n);
   }
@@ -386,9 +371,7 @@
   function getMovieTimesMonthly(){
     const everyMonths = parseNum($("movieEveryMonths").value);
     if (everyMonths > 0) return 1 / everyMonths;
-
-    // 月に回数（小数OK）
-    return parseNum($("movieTimes").value);
+    return parseNum($("movieTimes").value); // 小数OK
   }
 
   function recalc(){
@@ -399,7 +382,7 @@
     const moviePeople = parseNum($("moviePeople").value);
     const movieTimesMonthly = getMovieTimesMonthly();
 
-    // 表示：計算に使う月あたり回数
+    // 計算に使う月回数の表示
     if (movieTimesMonthly > 0) {
       $("movieTimesUsed").value = (Math.round(movieTimesMonthly * 1000) / 1000).toString();
     } else if ($("movieTimes").value.trim() === "" && $("movieEveryMonths").value.trim() === "") {
@@ -426,7 +409,7 @@
     // 適用率（明示）
     if (shares > 0) {
       $("rateText").textContent = fmtPctRate(rate * 100);
-      $("rateSub").textContent = rateLabel(shares);
+      $("rateSub").textContent = rateLabel(shares) + " で計算しています。";
     } else if (anyInput) {
       $("rateText").textContent = "-";
       $("rateSub").textContent = "※株数を入れると、適用率が表示されます";
@@ -504,76 +487,21 @@
     recalc();
   }
 
-  // ---------- 終値取得（参考表示） ----------
-  // ※環境によってCORS等で取得できない場合があります。その場合はメッセージ表示。
-  let lastCloseValue = null;
-  let lastCloseDate = null;
-
-  async function fetchLastClose(){
-    setCloseToast("");
-    $("lastCloseText").textContent = "取得中…";
-
-    try{
-      // Stooq（日足CSV）：最終行が直近の終値（前営業日）になります
-      const url = "https://stooq.com/q/d/l/?s=8267.jp&i=d";
-      const res = await fetch(url, { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-
-      const text = await res.text();
-      const lines = text.trim().split("\n");
-      if (lines.length < 2) throw new Error("データが少なすぎます");
-
-      // ヘッダ除外して最後の有効行を取る
-      const dataLines = lines.slice(1).filter(l => l.trim().length > 0);
-      const last = dataLines[dataLines.length - 1];
-      const cols = last.split(",");
-
-      // Date,Open,High,Low,Close,Volume
-      const date = cols[0];
-      const close = Number(cols[4]);
-
-      if (!Number.isFinite(close)) throw new Error("終値の解析に失敗");
-
-      lastCloseValue = close;
-      lastCloseDate = date;
-
-      $("lastCloseText").textContent = fmtNum(close) + "円";
-      $("lastCloseDate").textContent = `（${date}）`;
-      setCloseToast("※直近（前営業日）の終値です。");
-    }catch(e){
-      $("lastCloseText").textContent = "-";
-      $("lastCloseDate").textContent = "";
-      lastCloseValue = null;
-      lastCloseDate = null;
-      setCloseToast("※終値を取得できませんでした（通信環境・提供元仕様の影響）。必要なら手入力してください。");
-    }
-  }
-
-  function fillPriceFromClose(){
-    if (!lastCloseValue) {
-      setCloseToast("※先に「終値を取得」を押してください。");
-      return;
-    }
-    $("price").value = fmtNum(lastCloseValue);
-    setCloseToast(`取得株価に反映しました（${lastCloseDate} 終値）。`);
-    recalc();
-  }
-
   // ---------- events ----------
   ["shares","price","monthly","movieTimes","movieEveryMonths","moviePeople"].forEach(id=>{
     $(id).addEventListener("input", ()=>{ setToast(""); recalc(); });
     $(id).addEventListener("change", ()=>{ setToast(""); recalc(); });
 
-    // 数字の見やすさ（カンマ）：空なら何もしない
     $(id).addEventListener("blur", ()=>{
-      formatInputWithCommas($(id));
+      // 小数入力の movieTimes はカンマ整形しない（0.5等が壊れる）
+      if (id !== "movieTimes") formatInputWithCommas($(id));
       recalc();
     });
   });
 
   document.querySelectorAll("[data-times]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
-      $("movieEveryMonths").value = ""; // 競合しないように消す
+      $("movieEveryMonths").value = "";
       $("movieTimes").value = btn.getAttribute("data-times");
       setToast("回数を入力しました。必要なら人数も入力してください。");
       recalc();
@@ -581,8 +509,6 @@
   });
 
   $("clearBtn").addEventListener("click", clearAll);
-  $("fetchCloseBtn").addEventListener("click", fetchLastClose);
-  $("fillPriceBtn").addEventListener("click", fillPriceFromClose);
 
   // 初期：何も入れない（空のまま）
   recalc();
