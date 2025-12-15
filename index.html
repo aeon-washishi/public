@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>イオン株主優待：利回り計算（買い物＋映画）</title>
-  <meta name="description" content="保有株数・株価・買い物金額・映画の回数/人数から、株主優待（キャッシュバック＋映画割引）の年換算利回りを自動計算します。" />
+  <meta name="description" content="保有株数・取得株価・買い物金額・映画の回数/人数から、株主優待（キャッシュバック＋映画割引）の年換算利回りを自動計算します。" />
   <style>
     :root{
       --bg:#fbf7fd;
@@ -27,10 +27,11 @@
                   var(--bg);
       color:var(--ink);
     }
-    .wrap{max-width:900px;margin:0 auto;padding:18px}
+    .wrap{max-width:920px;margin:0 auto;padding:18px}
     header{margin:6px 0 14px}
     h1{font-size:22px;margin:0;letter-spacing:.02em}
     .sub{color:var(--muted);font-size:14px;margin-top:8px;line-height:1.7}
+
     .card{
       background:var(--card);
       border:1px solid var(--line);
@@ -39,26 +40,21 @@
       box-shadow: 0 10px 26px rgba(31,18,48,.06);
       margin:12px 0;
     }
-    .card h2{
-      font-size:16px;
-      margin:0 0 10px;
-      color:var(--accent);
-    }
-    .step{
-      display:inline-flex;align-items:center;gap:8px;
-      font-weight:900;
-    }
+    .card h2{font-size:16px;margin:0 0 10px;color:var(--accent)}
+
+    .step{display:inline-flex;align-items:center;gap:8px;font-weight:1000}
     .stepNo{
-      width:26px;height:26px;border-radius:999px;
+      width:28px;height:28px;border-radius:999px;
       display:inline-grid;place-items:center;
       background:linear-gradient(90deg,var(--accent),var(--accent2));
       color:#fff;font-size:14px;
     }
+
     label{
       display:block;
       font-size:15px;
       color:var(--ink);
-      font-weight:800;
+      font-weight:900;
       margin:14px 0 8px;
     }
     .hint{
@@ -66,7 +62,7 @@
       margin-top:6px;
       color:var(--muted);
       font-size:13px;
-      font-weight:600;
+      font-weight:650;
       line-height:1.6;
     }
     input{
@@ -78,20 +74,8 @@
       background:#fff;
       outline:none;
     }
-    input:focus{
-      border-color:var(--accent2);
-      box-shadow:0 0 0 5px rgba(177,76,201,.12)
-    }
-    .row{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:10px;
-    }
-    .two{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
+    input:focus{border-color:var(--accent2);box-shadow:0 0 0 5px rgba(177,76,201,.12)}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:640px){ .two{grid-template-columns:1fr} }
 
     .note{
@@ -106,15 +90,31 @@
     }
     .note strong{color:var(--ink)}
     .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+
     button{
       border:none;
       border-radius:14px;
       padding:12px 14px;
-      font-weight:900;
+      font-weight:1000;
       font-size:15px;
       cursor:pointer;
     }
     .ghost{background:#fff;border:1px solid var(--line);color:var(--ink);}
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:#fff;}
+    .mini{padding:10px 12px;font-size:14px;border-radius:12px}
+
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .chipBtn{
+      background:#fff;
+      border:1px solid var(--line);
+      color:var(--ink);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
     .toast{margin-top:10px;font-size:13px;color:var(--muted);min-height:18px;}
 
     .kpis{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
@@ -124,24 +124,36 @@
       border-radius:14px;
       padding:14px;
     }
-    .kpi .t{font-size:14px;color:var(--muted);font-weight:800}
-    .kpi .v{font-size:22px;margin-top:6px;font-weight:1000}
+    .kpi .t{font-size:14px;color:var(--muted);font-weight:900}
+    .kpi .v{font-size:22px;margin-top:6px;font-weight:1100}
     .kpi .s{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.6}
 
     details{margin-top:12px}
     details summary{
-      cursor:pointer;
-      color:var(--accent);
-      font-weight:900;
-      font-size:15px;
-      list-style:none;
-      user-select:none;
-      padding:6px 0;
+      cursor:pointer;color:var(--accent);font-weight:1000;font-size:15px;
+      list-style:none;user-select:none;padding:6px 0;
     }
     details summary::-webkit-details-marker{display:none}
+
     footer{margin:12px 0 4px;color:var(--muted);font-size:12px;line-height:1.7}
-    .warn{color:var(--warn);font-weight:900}
-    .ok{color:var(--ok);font-weight:900}
+    .warn{color:var(--warn);font-weight:1000}
+    .ok{color:var(--ok);font-weight:1000}
+
+    .yt{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+      border:2px dashed rgba(122,31,162,.25);
+      background:linear-gradient(180deg, rgba(177,76,201,.08), rgba(0,0,0,0));
+      padding:14px;border-radius:16px;
+    }
+    .yt .title{font-weight:1100;font-size:16px;color:var(--ink)}
+    .yt .desc{color:var(--muted);font-size:13px;line-height:1.7;margin-top:6px}
+    a.btnLink{
+      display:inline-block;text-decoration:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent2));
+      color:#fff;font-weight:1100;
+      padding:12px 14px;border-radius:14px;
+      font-size:15px;
+    }
   </style>
 </head>
 <body>
@@ -149,12 +161,12 @@
     <header>
       <h1>イオン株主優待：利回り計算（買い物＋映画）</h1>
       <div class="sub">
-        入力した内容から <strong>年間の優待額</strong> と <strong>優待利回り（年換算）</strong> を自動で計算します。<br/>
+        入力した内容から <strong>年間の優待合計</strong> と <strong>優待利回り（年換算）</strong> を自動で計算します。<br/>
         入力内容はこのページの中で計算され、どこかに送信されません。
       </div>
     </header>
 
-    <!-- 入力 -->
+    <!-- 1 -->
     <section class="card">
       <h2 class="step"><span class="stepNo">1</span>株の情報を入力</h2>
 
@@ -162,13 +174,26 @@
         <div>
           <label>保有株数（株）</label>
           <input id="shares" inputmode="numeric" placeholder="例：100" />
-          <span class="hint">※株数によって買い物の還元率が変わります（自動計算）</span>
+          <span class="hint">※株数によって、買い物のキャッシュバック率が変わります</span>
         </div>
 
         <div>
-          <label>現在の株価（円）</label>
+          <label>取得株価（円）</label>
           <input id="price" inputmode="numeric" placeholder="例：1800" />
-          <span class="hint">※だいたいの利回り把握用です</span>
+          <span class="hint">※利回り計算に使います（「いくらで買ったか」）</span>
+
+          <div class="note" style="margin-top:10px">
+            <strong>参考：直近（前営業日）の終値</strong><br/>
+            <div style="margin-top:6px">
+              <span id="lastCloseText">-</span>
+              <span id="lastCloseDate" style="margin-left:8px;color:var(--muted)"></span>
+            </div>
+            <div class="btns" style="margin-top:10px">
+              <button class="ghost mini" id="fetchCloseBtn" type="button">終値を取得</button>
+              <button class="ghost mini" id="fillPriceBtn" type="button">取得株価に入れる</button>
+            </div>
+            <div class="toast" id="closeToast"></div>
+          </div>
         </div>
       </div>
 
@@ -179,6 +204,7 @@
       </div>
     </section>
 
+    <!-- 2 -->
     <section class="card">
       <h2 class="step"><span class="stepNo">2</span>イオンでの買い物を入力</h2>
 
@@ -187,33 +213,61 @@
       <span class="hint">※「月いくらイオンで使うか」を入力してください</span>
     </section>
 
+    <!-- 3 -->
     <section class="card">
       <h2 class="step"><span class="stepNo">3</span>映画（イオンシネマ）を入力</h2>
 
       <div class="two">
         <div>
           <label>月に映画を見る回数（回／月）</label>
-          <input id="movieTimes" inputmode="numeric" placeholder="例：2" />
-          <span class="hint">※使わない場合は 0 でOK</span>
+          <input id="movieTimes" inputmode="decimal" placeholder="例：1  または  0.5" />
+          <span class="hint">※小数OK（例：2ヶ月に1回 → 0.5）</span>
+
+          <div class="chips" aria-label="回数の簡単入力">
+            <button class="chipBtn" type="button" data-times="1">月1回</button>
+            <button class="chipBtn" type="button" data-times="0.5">2ヶ月に1回</button>
+            <button class="chipBtn" type="button" data-times="0.3333333">3ヶ月に1回</button>
+            <button class="chipBtn" type="button" data-times="0.1666667">半年に1回</button>
+          </div>
         </div>
+
+        <div>
+          <label>または：何ヶ月に1回（ヶ月）</label>
+          <input id="movieEveryMonths" inputmode="numeric" placeholder="例：2" />
+          <span class="hint">※ここに入力すると「月に回数」を自動換算して計算します（例：2 → 0.5回／月）</span>
+        </div>
+      </div>
+
+      <div class="two" style="margin-top:6px">
         <div>
           <label>1回あたりの人数（人）</label>
           <input id="moviePeople" inputmode="numeric" placeholder="例：2" />
           <span class="hint">※ご夫婦なら 2 など</span>
         </div>
+        <div>
+          <label>（確認）計算に使う「月あたり回数」</label>
+          <input id="movieTimesUsed" disabled value="-" />
+          <span class="hint">※「何ヶ月に1回」を入れた場合は、ここが自動で変わります</span>
+        </div>
       </div>
 
       <div class="btns">
-        <button class="ghost" id="clearBtn">入力をクリア</button>
+        <button class="ghost" id="clearBtn" type="button">入力をクリア</button>
       </div>
       <div class="toast" id="toast"></div>
     </section>
 
-    <!-- 結果 -->
+    <!-- 4 -->
     <section class="card">
       <h2 class="step"><span class="stepNo">4</span>結果</h2>
 
       <div class="kpis">
+        <div class="kpi">
+          <div class="t">買い物キャッシュバック率（適用）</div>
+          <div class="v" id="rateText">-</div>
+          <div class="s" id="rateSub">株数を入れると表示されます。</div>
+        </div>
+
         <div class="kpi">
           <div class="t">年間の優待合計（買い物＋映画）</div>
           <div class="v" id="totalBenefitText">-</div>
@@ -253,21 +307,41 @@
       </details>
     </section>
 
+    <!-- YouTube promo -->
+    <section class="card">
+      <div class="yt">
+        <div>
+          <div class="title">YouTubeでも優待をわかりやすく解説しています</div>
+          <div class="desc">
+            「イオンの株主優待って結局どれだけ得？」を、実例つきでサクッと解説。<br/>
+            よかったらチャンネルも見に来てください！
+          </div>
+        </div>
+        <a class="btnLink" href="https://www.youtube.com/@washi_shi/videos" target="_blank" rel="noopener noreferrer">
+          わしっし夫婦のYouTubeを見る
+        </a>
+      </div>
+    </section>
+
     <footer>
-      ※本ページは「買い物キャッシュバック」＋「映画割引」のみの試算です（配当、対象外取引、利用条件・回数制限の変更などは反映していません）。
+      ※本ページは「買い物キャッシュバック」＋「映画割引」のみの試算です（配当、対象外取引、利用条件・回数制限の変更などは反映していません）。<br/>
+      ※終値の取得はネット接続・提供元の仕様により、表示できない場合があります。
     </footer>
   </div>
 
 <script>
   // ===== 固定パラメータ =====
-  const CAP_ANNUAL_YEN = 2000000;   // 年間の買い物上限（固定）
-  const MOVIE_DISCOUNT_YEN = 800;   // 1人1回あたり割引（固定）
+  const CAP_ANNUAL_YEN = 2000000;
+  const MOVIE_DISCOUNT_YEN = 800;
 
   // ---------- utils ----------
   const $ = (id) => document.getElementById(id);
   const fmtYen = (n) => new Intl.NumberFormat("ja-JP").format(Math.round(n)) + "円";
-  const fmtPct = (n) => (Math.round(n * 1000) / 1000).toFixed(3) + "%";
   const fmtNum = (n) => new Intl.NumberFormat("ja-JP").format(Math.round(n));
+
+  // 利回り：小数第1位まで
+  const fmtPct1 = (n) => (Math.round(n * 10) / 10).toFixed(1) + "%";
+  const fmtPctRate = (n) => (Math.round(n * 10) / 10).toFixed(1) + "%";
 
   function parseNum(v){
     if (v == null) return 0;
@@ -278,8 +352,16 @@
   }
 
   function setToast(msg){ $("toast").textContent = msg || ""; }
+  function setCloseToast(msg){ $("closeToast").textContent = msg || ""; }
 
-  // 還元率（自動）：分割後の区分に合わせた想定
+  function formatInputWithCommas(inputEl){
+    const raw = inputEl.value.trim();
+    if (raw === "") return; // 空はそのまま
+    const n = parseNum(raw);
+    inputEl.value = fmtNum(n);
+  }
+
+  // 還元率（自動）
   // 100-199:1%, 200-299:2%, 300-1499:3%, 1500-2999:4%, 3000-8999:5%, 9000+:7%
   function rateByShares(shares){
     if (shares >= 9000) return 0.07;
@@ -290,10 +372,23 @@
     if (shares >= 100)  return 0.01;
     return 0.00;
   }
+  function rateLabel(shares){
+    if (shares >= 9000) return "9,000株以上 → 7.0%";
+    if (shares >= 3000) return "3,000〜8,999株 → 5.0%";
+    if (shares >= 1500) return "1,500〜2,999株 → 4.0%";
+    if (shares >= 300)  return "300〜1,499株 → 3.0%";
+    if (shares >= 200)  return "200〜299株 → 2.0%";
+    if (shares >= 100)  return "100〜199株 → 1.0%";
+    return "100株未満 → 0.0%（対象外の想定）";
+  }
 
-  function formatInputWithCommas(inputEl){
-    const n = parseNum(inputEl.value);
-    inputEl.value = (n === 0 && inputEl.value.trim() === "") ? "" : fmtNum(n);
+  // 映画回数：月入力 or 〇ヶ月に1回 から算出
+  function getMovieTimesMonthly(){
+    const everyMonths = parseNum($("movieEveryMonths").value);
+    if (everyMonths > 0) return 1 / everyMonths;
+
+    // 月に回数（小数OK）
+    return parseNum($("movieTimes").value);
   }
 
   function recalc(){
@@ -301,38 +396,61 @@
     const price  = parseNum($("price").value);
     const monthly = parseNum($("monthly").value);
 
-    const movieTimes = parseNum($("movieTimes").value);
     const moviePeople = parseNum($("moviePeople").value);
+    const movieTimesMonthly = getMovieTimesMonthly();
 
-    // 入力がまだ揃ってない場合もあるので、0扱いで計算しつつ表示は丁寧に
+    // 表示：計算に使う月あたり回数
+    if (movieTimesMonthly > 0) {
+      $("movieTimesUsed").value = (Math.round(movieTimesMonthly * 1000) / 1000).toString();
+    } else if ($("movieTimes").value.trim() === "" && $("movieEveryMonths").value.trim() === "") {
+      $("movieTimesUsed").value = "-";
+    } else {
+      $("movieTimesUsed").value = "0";
+    }
+
     const annualSpend = monthly * 12;
     const eligible = Math.min(annualSpend, CAP_ANNUAL_YEN);
+
     const rate = rateByShares(shares);
     const cashback = eligible * rate;
 
-    const movieTicketsPerYear = movieTimes * moviePeople * 12;
+    const movieTicketsPerYear = movieTimesMonthly * moviePeople * 12;
     const movieSavings = movieTicketsPerYear * MOVIE_DISCOUNT_YEN;
 
     const totalBenefit = cashback + movieSavings;
     const invest = shares * price;
     const y = (invest > 0) ? (totalBenefit / invest * 100) : 0;
 
-    // 表示（空入力が多い時の見せ方を優先）
-    const anyInput = (shares||price||monthly||movieTimes||moviePeople);
+    const anyInput = (shares || price || monthly || movieTimesMonthly || moviePeople);
 
+    // 適用率（明示）
+    if (shares > 0) {
+      $("rateText").textContent = fmtPctRate(rate * 100);
+      $("rateSub").textContent = rateLabel(shares);
+    } else if (anyInput) {
+      $("rateText").textContent = "-";
+      $("rateSub").textContent = "※株数を入れると、適用率が表示されます";
+    } else {
+      $("rateText").textContent = "-";
+      $("rateSub").textContent = "株数を入れると表示されます。";
+    }
+
+    // 合計
     $("totalBenefitText").textContent = anyInput ? fmtYen(totalBenefit) : "-";
     $("totalBenefitSub").textContent = anyInput ? `買い物 ${fmtYen(cashback)} ＋ 映画 ${fmtYen(movieSavings)}` : "入力すると自動で計算されます。";
 
-    $("yieldText").textContent = (invest > 0 && totalBenefit >= 0) ? fmtPct(y) : "-";
+    // 利回り（小数第1位）
+    $("yieldText").textContent = (invest > 0) ? fmtPct1(y) : "-";
     if (invest > 0 && totalBenefit > 0){
       const paybackYears = invest / totalBenefit;
       $("yieldSub").textContent = `優待合計だけで元を取る目安：約${paybackYears.toFixed(1)}年`;
     } else if (anyInput) {
-      $("yieldSub").textContent = "※株数と株価を入れると利回りが出ます";
+      $("yieldSub").textContent = "※株数と取得株価を入れると利回りが出ます";
     } else {
       $("yieldSub").textContent = "-";
     }
 
+    // 内訳
     $("cashbackText").textContent = anyInput ? fmtYen(cashback) : "-";
     $("cashbackSub").textContent = anyInput
       ? `年間買い物 ${fmtYen(annualSpend)} → 対象 ${fmtYen(eligible)}（上限 ${fmtYen(CAP_ANNUAL_YEN)}）`
@@ -341,8 +459,8 @@
     $("movieText").textContent = anyInput ? fmtYen(movieSavings) : "-";
     $("movieSub").textContent = anyInput
       ? (movieTicketsPerYear > 0
-        ? `年 ${fmtNum(movieTicketsPerYear)} 人回（${fmtNum(movieTimes)}回/月 × ${fmtNum(moviePeople)}人）× 800円`
-        : `0回/月なら0円（800円／人／回で計算）`)
+        ? `年 ${(Math.round(movieTicketsPerYear * 10) / 10).toFixed(1)} 人回 × 800円`
+        : `0回なら0円（800円／人／回で計算）`)
       : "-";
 
     $("investText").textContent = (invest > 0) ? fmtYen(invest) : "-";
@@ -358,18 +476,20 @@
       capNote.innerHTML = `<span class="ok">上限未満：</span> 年間買い物 ${fmtYen(annualSpend)}（上限 ${fmtYen(CAP_ANNUAL_YEN)}）`;
     }
 
-    // 内訳
+    // 内訳（適用率も明示）
     $("breakdown").innerHTML =
       `【買い物】<br/>` +
-      `・年間買い物額 = 月間買い物額 × 12 = <strong>${fmtYen(monthly)}</strong> × 12 = <strong>${fmtYen(annualSpend)}</strong><br/>` +
+      `・年間買い物額 = ${fmtYen(monthly)} × 12 = <strong>${fmtYen(annualSpend)}</strong><br/>` +
       `・対象買い物額 = min(年間買い物額, 200万円) = <strong>${fmtYen(eligible)}</strong><br/>` +
-      `・年間キャッシュバック = 対象買い物額 × 還元率(自動) = <strong>${fmtYen(cashback)}</strong><br/><br/>` +
+      `・適用キャッシュバック率 = <strong>${(shares>0)?fmtPctRate(rate*100):"-"}</strong>（${(shares>0)?rateLabel(shares):"株数入力で決定"}）<br/>` +
+      `・年間キャッシュバック = <strong>${fmtYen(cashback)}</strong><br/><br/>` +
       `【映画】<br/>` +
-      `・年間割引 =（回/月 × 人数 × 12）× 800円 =（<strong>${fmtNum(movieTimes)}</strong> × <strong>${fmtNum(moviePeople)}</strong> × 12）× 800 = <strong>${fmtYen(movieSavings)}</strong><br/><br/>` +
+      `・月あたり回数（計算用）= <strong>${(movieTimesMonthly>0)?(Math.round(movieTimesMonthly*1000)/1000):0}</strong> 回／月<br/>` +
+      `・年間割引 =（回／月 × 人数 × 12）× 800円 = <strong>${fmtYen(movieSavings)}</strong><br/><br/>` +
       `【合計】<br/>` +
       `・年間優待合計 = <strong>${fmtYen(totalBenefit)}</strong><br/>` +
       `・投資金額（概算）= <strong>${fmtYen(invest)}</strong><br/>` +
-      `・優待利回り（年）= 年間優待合計 ÷ 投資金額 × 100 = <strong>${(invest>0)?fmtPct(y):"-"}</strong>`;
+      `・優待利回り（年）= 年間優待合計 ÷ 投資金額 × 100 = <strong>${(invest>0)?fmtPct1(y):"-"}</strong>`;
   }
 
   function clearAll(){
@@ -377,20 +497,92 @@
     $("price").value = "";
     $("monthly").value = "";
     $("movieTimes").value = "";
+    $("movieEveryMonths").value = "";
     $("moviePeople").value = "";
+    $("movieTimesUsed").value = "-";
     setToast("入力をクリアしました。");
     recalc();
   }
 
-  // イベント
-  ["shares","price","monthly","movieTimes","moviePeople"].forEach(id=>{
+  // ---------- 終値取得（参考表示） ----------
+  // ※環境によってCORS等で取得できない場合があります。その場合はメッセージ表示。
+  let lastCloseValue = null;
+  let lastCloseDate = null;
+
+  async function fetchLastClose(){
+    setCloseToast("");
+    $("lastCloseText").textContent = "取得中…";
+
+    try{
+      // Stooq（日足CSV）：最終行が直近の終値（前営業日）になります
+      const url = "https://stooq.com/q/d/l/?s=8267.jp&i=d";
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
+      const text = await res.text();
+      const lines = text.trim().split("\n");
+      if (lines.length < 2) throw new Error("データが少なすぎます");
+
+      // ヘッダ除外して最後の有効行を取る
+      const dataLines = lines.slice(1).filter(l => l.trim().length > 0);
+      const last = dataLines[dataLines.length - 1];
+      const cols = last.split(",");
+
+      // Date,Open,High,Low,Close,Volume
+      const date = cols[0];
+      const close = Number(cols[4]);
+
+      if (!Number.isFinite(close)) throw new Error("終値の解析に失敗");
+
+      lastCloseValue = close;
+      lastCloseDate = date;
+
+      $("lastCloseText").textContent = fmtNum(close) + "円";
+      $("lastCloseDate").textContent = `（${date}）`;
+      setCloseToast("※直近（前営業日）の終値です。");
+    }catch(e){
+      $("lastCloseText").textContent = "-";
+      $("lastCloseDate").textContent = "";
+      lastCloseValue = null;
+      lastCloseDate = null;
+      setCloseToast("※終値を取得できませんでした（通信環境・提供元仕様の影響）。必要なら手入力してください。");
+    }
+  }
+
+  function fillPriceFromClose(){
+    if (!lastCloseValue) {
+      setCloseToast("※先に「終値を取得」を押してください。");
+      return;
+    }
+    $("price").value = fmtNum(lastCloseValue);
+    setCloseToast(`取得株価に反映しました（${lastCloseDate} 終値）。`);
+    recalc();
+  }
+
+  // ---------- events ----------
+  ["shares","price","monthly","movieTimes","movieEveryMonths","moviePeople"].forEach(id=>{
     $(id).addEventListener("input", ()=>{ setToast(""); recalc(); });
     $(id).addEventListener("change", ()=>{ setToast(""); recalc(); });
-    // 見やすさのため、フォーカスを外したらカンマ整形
-    $(id).addEventListener("blur", ()=>{ formatInputWithCommas($(id)); recalc(); });
+
+    // 数字の見やすさ（カンマ）：空なら何もしない
+    $(id).addEventListener("blur", ()=>{
+      formatInputWithCommas($(id));
+      recalc();
+    });
+  });
+
+  document.querySelectorAll("[data-times]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      $("movieEveryMonths").value = ""; // 競合しないように消す
+      $("movieTimes").value = btn.getAttribute("data-times");
+      setToast("回数を入力しました。必要なら人数も入力してください。");
+      recalc();
+    });
   });
 
   $("clearBtn").addEventListener("click", clearAll);
+  $("fetchCloseBtn").addEventListener("click", fetchLastClose);
+  $("fillPriceBtn").addEventListener("click", fillPriceFromClose);
 
   // 初期：何も入れない（空のまま）
   recalc();
