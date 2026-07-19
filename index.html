@@ -196,7 +196,7 @@
       <div class="note">
         <strong>固定条件：</strong><br/>
         ・買い物キャッシュバックは <strong>年間200万円</strong> までを対象（超過分は切り捨て）<br/>
-        ・イオンシネマ割引は <strong>800円／人／回</strong> として計算
+        ・イオンシネマ割引は <strong>1000円／人／回</strong> として計算
       </div>
     </section>
 
@@ -327,7 +327,7 @@
 <script>
   // ===== 固定パラメータ =====
   const CAP_ANNUAL_YEN = 2000000;
-  const MOVIE_DISCOUNT_YEN = 800;
+  const MOVIE_DISCOUNT_YEN = 1000;
 
   // ---------- utils ----------
   const $ = (id) => document.getElementById(id);
@@ -451,8 +451,8 @@
     $("movieText").textContent = anyInput ? fmtYen(movieSavings) : "-";
     $("movieSub").textContent = anyInput
       ? (movieTicketsPerYear > 0
-        ? `年 ${(Math.round(movieTicketsPerYear * 10) / 10).toFixed(1)} 人回 × 800円`
-        : `0回なら0円（800円／人／回で計算）`)
+        ? `年 ${(Math.round(movieTicketsPerYear * 10) / 10).toFixed(1)} 人回 × 1000円`
+        : `0回なら0円（1000円／人／回で計算）`)
       : "-";
 
     $("investText").textContent = (invest > 0) ? fmtYen(invest) : "-";
@@ -477,7 +477,7 @@
       `・年間キャッシュバック = <strong>${fmtYen(cashback)}</strong><br/><br/>` +
       `【映画】<br/>` +
       `・月あたり回数（計算用）= <strong>${(movieTimesMonthly>0)?(Math.round(movieTimesMonthly*1000)/1000):0}</strong> 回／月<br/>` +
-      `・年間割引 =（回／月 × 人数 × 12）× 800円 = <strong>${fmtYen(movieSavings)}</strong><br/><br/>` +
+      `・年間割引 =（回／月 × 人数 × 12）× 1000円 = <strong>${fmtYen(movieSavings)}</strong><br/><br/>` +
       `【合計】<br/>` +
       `・年間優待合計 = <strong>${fmtYen(totalBenefit)}</strong><br/>` +
       `・投資金額（概算）= <strong>${fmtYen(invest)}</strong><br/>` +
